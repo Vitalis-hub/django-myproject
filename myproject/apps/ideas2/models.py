@@ -57,4 +57,27 @@ class Idea(CreationModificationDateBase, UrlBase):
     def get_url_path(self):
         return reverse("ideas:ideas_detail", kwargs={"pk": self.pk})
     
-    
+class IdeaTranslations(models.Model):
+    idea = model.ForeignKey(
+        Idea,
+        verbose_name =_("Idea"),
+        on_delete = models.CASCADE,
+        related_name="translations",
+    )
+language = models.CharField(_("Language"), max_length=7)
+
+title = models.CharField(_("Title"), max_length = 200)
+content = models.TextField(_("Content"))
+
+    class Meta:
+        verbose_name = _("Idea Translations")
+        verbose_name_plural = _("Idea Translations")
+        ordering = ["language"]
+        unique_together = [["idea", "language"]]
+
+    def __str__(self):
+        return self.title
+
+
+
+        

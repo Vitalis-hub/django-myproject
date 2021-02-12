@@ -24,5 +24,37 @@ class Idea(CreationModificationDateBase, UrlBase):
     )
     author = model.ForiegnKey(
         settings.AUTH_USER_MODEL,
-        verbose_name = ('Author')
+        verbose_name = ("Author"),
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="authored_ideas",
     )
+
+    title = models.CharField(_("Title"), max_length=200)
+    content = models.TextField(_("Content"))
+
+    categoriess = models.ManyToManyField(
+        "categories.Category",
+        verbose_name=("Categories"),
+        related_name="category_ideas",
+    )
+
+    rating = models.PositiveIntegerField(
+        _("Rating"), choices=RATING_CHOICES, blank=True, null=True
+    )
+
+    translated_title = TranslatedField("title")
+    translated_content = TranslatedField("content")
+
+    class Meta:
+        verbose_name = _("Idea")
+        verbose_name_plural = _("Ideas")
+
+    def __str__(self):
+        return self.title
+
+    def get_url_path(self):
+        return reverse("ideas:ideas_detail", kwargs={"pk": self.pk})
+    
+    

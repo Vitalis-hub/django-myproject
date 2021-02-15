@@ -19,10 +19,10 @@ RATING_CHOICES = (
 )
 
 class Idea(CreationModificationDateBase, UrlBase):
-    uuid = model.UUIDField(
+    uuid = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False
     )
-    author = model.ForiegnKey(
+    author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name = ("Author"),
         on_delete=models.SET_NULL,
@@ -64,10 +64,10 @@ class IdeaTranslations(models.Model):
         on_delete = models.CASCADE,
         related_name="translations",
     )
-language = models.CharField(_("Language"), max_length=7)
+    language = models.CharField(_("Language"), max_length=7)
 
-title = models.CharField(_("Title"), max_length = 200)
-content = models.TextField(_("Content"))
+    title = models.CharField(_("Title"), max_length = 200)
+    content = models.TextField(_("Content"))
 
     class Meta:
         verbose_name = _("Idea Translations")

@@ -14,8 +14,24 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-
+from django.urls import include, path
+from django.conf.urls.i18n import i18n_patterns
+from django.conf import settings
+from django.conf.urls.static import static
+from django.shortcuts import redirect
+'''
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
+'''
+
+urlpatterns = i18n_patterns (
+    path("", lambda request: redirect("ideas2: idea_list")),
+    path("admin/", admin.site.urls),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("ideas2/", include(("myproject.apps.ideas2.urls", "ideas2"),namespace="ideas2")),
+)
+
+urlpatterns += static(settings.STATIC_URL,
+documents_root=settings.STATIC_ROOT)
+urlpatterns += static("/media/", document_root=settings.MEDIA_ROOT)
